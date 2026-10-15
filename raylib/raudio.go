@@ -489,6 +489,9 @@ func UnloadAudioStream(stream AudioStream) {
 }
 
 // UpdateAudioStream - Update audio stream buffers with data ([]float32 or []int16)
+// NOTE: The C API parameter is named "frameCount" but the original upstream Go binding
+// passes element count (len(data)), which works because raylib internally clamps to
+// buffer size. Passing true frame count (len/channels) causes silence. Keep as-is.
 func UpdateAudioStream(stream AudioStream, data any) {
 	var cdata unsafe.Pointer
 	var csamplesCount C.int
